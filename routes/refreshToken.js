@@ -8,7 +8,7 @@ const Token = require("../schema/token");
 const router = express.Router();
 
 router.post("/", async function (req, res, next) {
-  log.info("POST /api/refresh-token");
+  log.info("POST /bingo/refresh-token");
   const refreshToken = req.body.refreshToken;
   if (!refreshToken) {
     console.log("No se proporcionó token de actualización", refreshToken);

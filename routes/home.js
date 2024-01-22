@@ -4,9 +4,9 @@ const { jsonResponse } = require("../lib/jsonResponse");
 const router = express.Router();
 
 router.post("/", async function (req, res, next) {
-  const { roomId, username, status } = req.body;
+  const { roomId, username, status, winner} = req.body;
 
-  if (!roomId || !username || !status) {
+  if (!roomId || !username || !status || !winner) {
 
     return res.status(409).json(
       jsonResponse(409, {
@@ -17,7 +17,7 @@ router.post("/", async function (req, res, next) {
   }
   
   try {
-    const lobby = new Lobby({ roomId, username, status });
+    const lobby = new Lobby({ roomId, username, status, winner});
     await lobby.save();
 
     res.json(
