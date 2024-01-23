@@ -10,7 +10,7 @@ router.post("/", async function (req, res, next) {
     //return next(new Error("username and password are required"));
     return res.status(409).json(
       jsonResponse(409, {
-        error: "Usuario o Contrasseña Incorrecto",
+        error: "username and password are required",
       })
     );
   }
@@ -22,7 +22,7 @@ router.post("/", async function (req, res, next) {
     if (userExists) {
       return res.status(409).json(
         jsonResponse(409, {
-          error: "Usuario No existe",
+          error: "username already exists",
         })
       );
       //return next(new Error("user already exists"));

@@ -4,19 +4,19 @@ const { jsonResponse } = require("../lib/jsonResponse");
 const router = express.Router();
 
 router.post("/", async function (req, res, next) {
-  const { username, winner, id} = req.body;
+  const { username, winner,card, id} = req.body;
 
   if (!username || !winner  ) {
     return res.status(409).json(
       jsonResponse(409, {
         error: "Datos incompletos para crear una Tarjeta de BINGO",
-        incompleteData: { username, winner,id},
+        incompleteData: { username, winner,card,id},
       })
     );
   }
 
   try {
-    const match = new Match({ username, winner}); // Cambiado a 'match'
+    const match = new Match({ username, winner,card}); // Cambiado a 'match'
     await match.save();
 
     res.json(
