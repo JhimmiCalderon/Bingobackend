@@ -4,6 +4,15 @@ const { jsonResponse } = require("../lib/jsonResponse");
 const getUserInfo = require("../lib/getUserInfo");
 const router = express.Router();
 
+/**
+ * Ruta para autenticar a un usuario y generar tokens de acceso y actualización.
+ * @route POST /bingo/login
+ * @param {Object} req.body - Datos de la solicitud.
+ * @param {String} req.body.username - Nombre de usuario del usuario a autenticar (requerido).
+ * @param {String} req.body.password - Contraseña del usuario a autenticar (requerido).
+ * @returns {JSON} Respuesta JSON con tokens de acceso y actualización, y la información del usuario autenticado.
+ * @throws {Error} Si hay un error al procesar la solicitud.
+ */
 router.post("/", async function (req, res, next) {
   const { username, password } = req.body;
 
@@ -23,8 +32,7 @@ router.post("/", async function (req, res, next) {
         const accessToken = user.createAccessToken();
         const refreshToken = await user.createRefreshToken();
 
-        console.log({ accessToken, refreshToken });
-
+        // Enviar la respuesta JSON con tokens y la información del usuario autenticado
         return res.json(
           jsonResponse(200, {
             accessToken,
@@ -33,8 +41,7 @@ router.post("/", async function (req, res, next) {
           })
         );
       } else {
-        //res.status(401).json({ error: "username and/or password incorrect" });
-
+        // Responder con error 401 si la contraseña es incorrecta
         return res.status(401).json(
           jsonResponse(401, {
             error: "username and/or password incorrect",
@@ -42,6 +49,7 @@ router.post("/", async function (req, res, next) {
         );
       }
     } else {
+      // Responder con error 401 si el usuario no existe
       return res.status(401).json(
         jsonResponse(401, {
           error: "username does not exist",

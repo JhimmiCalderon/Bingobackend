@@ -3,14 +3,23 @@ const User = require("../schema/user");
 const { jsonResponse } = require("../lib/jsonResponse");
 const router = express.Router();
 
+/**
+ * Ruta para crear un nuevo usuario.
+ * @route POST /signup
+ * @param {Object} req.body - Datos del usuario a crear.
+ * @param {String} req.body.username - Nombre de usuario del nuevo usuario (requerido).
+ * @param {String} req.body.password - Contraseña del nuevo usuario (requerido).
+ * @param {String} req.body.name - Nombre del nuevo usuario (requerido).
+ * @returns {JSON} Respuesta JSON indicando el resultado de la operación.
+ * @throws {Error} Si hay un error al procesar la solicitud.
+ */
 router.post("/", async function (req, res, next) {
   const { username, password, name } = req.body;
 
   if (!username || !password || !name) {
-    //return next(new Error("username and password are required"));
     return res.status(409).json(
       jsonResponse(409, {
-        error: "username and password are required",
+        error: "username, password, and name are required",
       })
     );
   }
@@ -22,18 +31,17 @@ router.post("/", async function (req, res, next) {
     if (userExists) {
       return res.status(409).json(
         jsonResponse(409, {
-          error: "username already exists",
+          error: "Usuario ya existe",
         })
       );
-      //return next(new Error("user already exists"));
     } else {
-      const user = new User({ username, password, name });
+      const newUser = new User({ username, password, name });
 
-      user.save();
+      newUser.save();
 
       res.json(
         jsonResponse(200, {
-          message: "User created successfully",
+          message: "Usuario Creado",
         })
       );
     }
@@ -43,7 +51,6 @@ router.post("/", async function (req, res, next) {
         error: "Error creating user",
       })
     );
-    //return next(new Error(err.message));
   }
 });
 
